@@ -1,0 +1,5 @@
+kill(all);
+
+f : exp(-y^2) * cos(x * y);
+
+integrate(integrate(f, y, 0, 1-x), x, 0, 1);
