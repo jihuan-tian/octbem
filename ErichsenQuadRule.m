@@ -5,6 +5,8 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
 				ky_shape_functions_for_geometry,
 				kx_cell_index,
 				ky_cell_index,
+				panel_distance_matrix,
+				neighboring_type_matrix,
 				mesh_cells,
 				mesh_nodes,
 				nx_functor, ny_functor,
@@ -45,6 +47,8 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
   ## for cell \f$K_y\f$.
   ## @param kx_cell_index The cell index for \f$K_x\f$.
   ## @param ky_cell_index The cell index for \f$K_y\f$.
+  ## @param panel_distance_matrix Distance between each pair of panels.
+  ## @param neighboring_type_matrix Neighboring type between each pair of panels.
   ## @param mesh_cells All cells in the mesh.
   ## @param mesh_nodes All nodes in the mesh.
   ## @param nx_functor The functor depending on area coordinates for
@@ -65,7 +69,7 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
   ## @param ret The quadrature value.
 
   ## Determination of the triangular cell neighboring relationship.
-  cell_neighboring_type = GetTriaNeighboringType(kx_cell_index, ky_cell_index, mesh_cells);
+  cell_neighboring_type = neighboring_type_matrix(kx_cell_index, ky_cell_index);
 
   ## Get the list of node indices stored in the two cells.
   kx_cell_node_indices = mesh_cells(kx_cell_index, :);
@@ -200,16 +204,8 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       kx_cell_node_coord_list = mesh_nodes(kx_cell_node_indices, :);
       ky_cell_node_coord_list = mesh_nodes(ky_cell_node_indices, :);
       
-      ## Get corner node indices for the two cells.
-      kx_corner_node_indices = kx_cell_node_indices(GetTriaCornerNodeIndices(kx_cell_order));
-      ky_corner_node_indices = ky_cell_node_indices(GetTriaCornerNodeIndices(ky_cell_order));
-      
-      ## Extract coordinates for ordered cell corner nodes.
-      kx_corner_node_coord_list = mesh_nodes(kx_corner_node_indices, :);
-      ky_corner_node_coord_list = mesh_nodes(ky_corner_node_indices, :);
-      
       ## Calculate the distance between the two panels.
-      panel_distance = DistOfConvexPolygons(kx_cell_node_coord_list, kx_corner_node_coord_list, ky_cell_node_coord_list, ky_corner_node_coord_list);
+      panel_distance = panel_distance_matrix(kx_cell_index, ky_cell_index);
       
       ## Calculate the number of quadrature points.
       norder = ErichsenRegularQuadOrder(kernel_singularity_order, basis_function_polynomial_order, sobolev_function_space_order, mesh_size_estimate, panel_distance, galerkin_estimate_norm_index);

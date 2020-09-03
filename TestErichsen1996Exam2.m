@@ -3,13 +3,12 @@ ConfigGraphicsToolkit;
 
 addpath("./gmsh_io");
 addpath("./stroud");
-addpath("./fpl-1.3.5");
 
 pkg load fpl;
 pkg load msh;
 
 ## Read the mesh.
-mesh_filename = "./mesh/sphere.msh";
+mesh_filename = "./mesh/sphere-coarse.msh";
 problem_domain_mesh = ReadGmshTrias(mesh_filename);
 ## Plot the mesh.
 figure;
@@ -141,6 +140,12 @@ endfor
 progress_counter = 0;
 progress_total_steps = problem_domain_mesh.number_of_cells * problem_domain_mesh.number_of_cells;
 
+## Calculate the distance between each pair of panels.
+panel_distance_matrix = CalcPanelDistanceMatrix(problem_domain_mesh);
+
+## Calculate the neighboring type between each pair of panels.
+neighboring_type_matrix = CalcPanelNeighboringTypes(problem_domain_mesh.mesh_cells);
+
 ## Iterate over each field cell.
 for e = 1:problem_domain_mesh.number_of_cells
   ## Iterate over each source cell.
@@ -151,9 +156,9 @@ for e = 1:problem_domain_mesh.number_of_cells
       ## Iterate over each ansatz function, which is associated with
       ## the source cell.
       for j = 1:number_of_bases_in_ansatz_function_space
-	stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) +=	ErichsenQuadRuleFlat(@LaplaceDLPKernel3D, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.min_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) +=	ErichsenQuadRuleFlat(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.min_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
 	
-	rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.min_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.min_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
       endfor
     endfor
     

@@ -16,10 +16,11 @@ function norder = ErichsenRegularQuadOrder(kernel_singularity_order, basis_funct
   
   t = function_space_sobolev_order - galerkin_estimate_norm_index;
   D = max([0, log(panel_distance) / log(mesh_size_estimate / panel_distance)]);
-  norder = ceil(0.5 * (2 * basis_function_polynomial_order + t - function_space_sobolev_order + (kernel_singularity_order + basis_function_polynomial_order + t - function_space_sobolev_order) * D));
+  # norder = ceil(0.5 * (2 * basis_function_polynomial_order + t - function_space_sobolev_order + (kernel_singularity_order + basis_function_polynomial_order + t - function_space_sobolev_order) * D));
+  norder = ceil(1 + 2 * D);
 
   ## Limit the norder.
-  max_norder = 5;
+  max_norder = 2;
   if (norder > max_norder)
     norder = max_norder;
   endif

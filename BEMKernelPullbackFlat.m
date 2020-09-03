@@ -27,6 +27,6 @@ function pullback_kernel_values = BEMKernelPullbackFlat(xi, eta, nx, ny, kernel_
     ## Substitute the global coordinates \f$x\f$ and \f$y\f$ into the
     ## kernel function. N.B. The normal vector data may not be used or
     ## fully used by the kernel function.
-    pullback_kernel_values = kernel_function(x, y, repmat(nx, [number_of_coords, 1]), repmat(ny, [number_of_coords, 1]));
+    pullback_kernel_values = kernel_function(x, y, nx, ny);
   endif
 endfunction
