@@ -27,9 +27,12 @@ function global_coords = AreaToGlobalCoords(area_coord_list, shape_functions_for
       for m = 1:number_of_area_coords
 	## Linear combination of each shape functions by weighting them with
 	## cell node coordinates.
+	shape_function_evaluations = zeros(number_of_cell_nodes, 1);
 	for n = 1:number_of_cell_nodes
-	  global_coords(m, :) = global_coords(m, :) + cell_node_coord_list(n, :) * shape_functions_for_geometry{n}(area_coord_list(m, :));
+	  shape_function_evaluations(n) = shape_functions_for_geometry{n}(area_coord_list(m, :));
 	endfor
+
+	global_coords(m, :) = inner_prod(cell_node_coord_list, shape_function_evaluations);
       endfor
     else
       global_coords = [];

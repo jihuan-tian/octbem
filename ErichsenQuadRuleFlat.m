@@ -92,6 +92,8 @@ function ret = ErichsenQuadRuleFlat(kernel_function, kernel_singularity_order,
   ## points.
   [norder_for_eta, norder_for_omega] = ErichsenSingularQuadOrder(basis_function_polynomial_order, sobolev_function_space_order, mesh_size_estimate);
 
+  ret = 0;
+
   switch (cell_neighboring_type)
     case 1			# Identical
       ## fprintf(stderr(), "Erichsen1996Efficient: same panel case!\n");

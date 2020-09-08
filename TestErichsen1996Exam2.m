@@ -8,7 +8,7 @@ pkg load fpl;
 pkg load msh;
 
 ## Read the mesh.
-mesh_filename = "./mesh/sphere-coarse.msh";
+mesh_filename = argv(){1};
 problem_domain_mesh = ReadGmshTrias(mesh_filename);
 ## Plot the mesh.
 figure;
@@ -174,8 +174,11 @@ rhs_vector = rhs_matrix * neumann_bc;
 ## surface.
 u = stiffness_matrix \ rhs_vector;
 
-## Calculate the L2 error.
-err = norm(u - u_star) / norm(u_star)
+## Calculate the relative L2 error.
+l2_err = CalcL2Norm(u - u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d) / CalcL2Norm(u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+
+## Calculate  the relative L1 error.
+l1_err = CalcL1Norm(u - u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d) / CalcL1Norm(u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
 
 ## Plot results.
 NewFigure;

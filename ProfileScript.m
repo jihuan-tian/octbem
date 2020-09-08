@@ -6,6 +6,11 @@ function ProfileScript(script_name, profile_dir)
     profile_dir = cstrcat("./", script_name);
   endif
 
+  ## Create the directory storing the profiling results if it does not exist.
+  if (exist(profile_dir, "dir") == 0)
+    mkdir(profile_dir);
+  endif
+
   ## Start profiling for the algorithm execution.
   profile clear;
   profile on;
