@@ -15,5 +15,6 @@ var searchData=
   ['globaljacobideton3dtria',['GlobalJacobiDetOn3DTria',['../_global_jacobi_det_on3_d_tria_8mlb.html#a051ff21326fbcf85c839f3e2d7e39fcb',1,'GlobalJacobiDetOn3DTria.mlb']]],
   ['globaljacobion3dtria',['GlobalJacobiOn3DTria',['../_global_jacobi_on3_d_tria_8mlb.html#a16bcddd3c38e9b07a6541d1383db31d0',1,'GlobalJacobiOn3DTria.mlb']]],
   ['globalsurfacemetricon3dflattria',['GlobalSurfaceMetricOn3DFlatTria',['../_global_surface_metric_on3_d_flat_tria_8mlb.html#a11f5af2662245875558e0d28acab05f7',1,'GlobalSurfaceMetricOn3DFlatTria.mlb']]],
-  ['globalsurfacemetricon3dtria',['GlobalSurfaceMetricOn3DTria',['../_global_surface_metric_on3_d_tria_8mlb.html#a56dcf978e75f6f678d0e466ae1da7c95',1,'GlobalSurfaceMetricOn3DTria.mlb']]]
+  ['globalsurfacemetricon3dtria',['GlobalSurfaceMetricOn3DTria',['../_global_surface_metric_on3_d_tria_8mlb.html#ab750d7f83d80c86bf585186dc7fea511',1,'GlobalSurfaceMetricOn3DTria.mlb']]],
+  ['globalsurfacemetricons2tria',['GlobalSurfaceMetricOnS2Tria',['../_global_surface_metric_on_s2_tria_8mlb.html#ae1fc0573f358d44e06b3684bdbc6f964',1,'GlobalSurfaceMetricOnS2Tria.mlb']]]
 ];

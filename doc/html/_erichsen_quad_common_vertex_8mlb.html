@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>octbem: /home/jihuan/文档/Documents/academic/FEM general/program/fem/ErichsenQuadCommonVertex.mlb File Reference</title>
+<title>octbem: /home/jihuan/Projects/git/octbem/ErichsenQuadCommonVertex.mlb File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('_erichsen_quad_common_vertex_8mlb.html
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">/home/jihuan/文档/Documents/academic/FEM general/program/fem/ErichsenQuadCommonVertex.mlb File Reference</div>  </div>
+<div class="title">/home/jihuan/Projects/git/octbem/ErichsenQuadCommonVertex.mlb File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -168,12 +168,12 @@ $(document).ready(function(){initNavTree('_erichsen_quad_common_vertex_8mlb.html
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad1f882495f5881cc34ab140e7e143249"><td class="memItemLeft" align="right" valign="top">function   ret  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_erichsen_quad_common_vertex_8mlb.html#ad1f882495f5881cc34ab140e7e143249">ErichsenQuadCommonVertex</a> (kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor)</td></tr>
-<tr class="memdesc:ad1f882495f5881cc34ab140e7e143249"><td class="mdescLeft">&#160;</td><td class="mdescRight">ErichsenQuadCommonVertex - Perform the common vertex integration using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
+<tr class="memitem:a0d09041f8adb374bc26ab7ed70df2d53"><td class="memItemLeft" align="right" valign="top">function   ret  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_erichsen_quad_common_vertex_8mlb.html#a0d09041f8adb374bc26ab7ed70df2d53">ErichsenQuadCommonVertex</a> (kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor)</td></tr>
+<tr class="memdesc:a0d09041f8adb374bc26ab7ed70df2d53"><td class="mdescLeft">&#160;</td><td class="mdescRight">ErichsenQuadCommonVertex - Perform the common vertex integration using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
 \[ \int_{\hat{K} \times \hat{K}} H_{loc}(\xi, \eta) k(\xi, \eta) \intd s(\xi) \intd s(\eta), \]
 </p>
-<p>.  <a href="#ad1f882495f5881cc34ab140e7e143249">More...</a><br /></td></tr>
-<tr class="separator:ad1f882495f5881cc34ab140e7e143249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<p>.  <a href="#a0d09041f8adb374bc26ab7ed70df2d53">More...</a><br /></td></tr>
+<tr class="separator:a0d09041f8adb374bc26ab7ed70df2d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ErichsenQuadCommonVertex - Perform the common vertex integration using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
@@ -181,8 +181,8 @@ Functions</h2></td></tr>
 </p>
 <p>. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ad1f882495f5881cc34ab140e7e143249"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1f882495f5881cc34ab140e7e143249">&#9670;&nbsp;</a></span>ErichsenQuadCommonVertex()</h2>
+<a id="a0d09041f8adb374bc26ab7ed70df2d53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d09041f8adb374bc26ab7ed70df2d53">&#9670;&nbsp;</a></span>ErichsenQuadCommonVertex()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -251,7 +251,19 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>ny_functor</em>&#160;</td>
+          <td class="paramname"><em>ny_functor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>Jx_functor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>Jy_functor</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -280,6 +292,8 @@ Functions</h2></td></tr>
     <tr><td class="paramname">ky_cell_node_coord_list</td><td>A list of node global coordinates for the cell \(K_y\). </td></tr>
     <tr><td class="paramname">nx_functor</td><td>The functor depending on area coordinates for calculating the cell normal vectors for \(K_x\). </td></tr>
     <tr><td class="paramname">ny_functor</td><td>The functor depending on area coordinates for calculating the cell normal vectors for \(K_y\). </td></tr>
+    <tr><td class="paramname">Jx_functor</td><td>The functor depending on area coordinates for calculating the Jacobian determinant for \(K_x\). </td></tr>
+    <tr><td class="paramname">Jy_functor</td><td>The functor depending on area coordinates for calculating the Jacobian determinant for \(K_y\). </td></tr>
     <tr><td class="paramname">ret</td><td>The quadrature value. </td></tr>
   </table>
   </dd>

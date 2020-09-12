@@ -64,4 +64,5 @@ function gmsh_mesh_obj = ReadGmshTrias(gmsh_msh_file_name)
   endfor
   
   gmsh_mesh_obj.min_cell_range = min(gmsh_mesh_obj.cell_ranges);
+  gmsh_mesh_obj.max_cell_range = max(gmsh_mesh_obj.cell_ranges) * 2;
 endfunction

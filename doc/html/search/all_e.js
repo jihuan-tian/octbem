@@ -7,5 +7,7 @@ var searchData=
   ['surfacenormalon3dflattria',['SurfaceNormalOn3DFlatTria',['../_surface_normal_on3_d_flat_tria_8mlb.html#a565d13915cb7467d86bad1ddb9c3d56c',1,'SurfaceNormalOn3DFlatTria.mlb']]],
   ['surfacenormalon3dflattria_2emlb',['SurfaceNormalOn3DFlatTria.mlb',['../_surface_normal_on3_d_flat_tria_8mlb.html',1,'']]],
   ['surfacenormalon3dtria',['SurfaceNormalOn3DTria',['../_surface_normal_on3_d_tria_8mlb.html#a38af830921e9bb83309e4694cf9cb2a6',1,'SurfaceNormalOn3DTria.mlb']]],
-  ['surfacenormalon3dtria_2emlb',['SurfaceNormalOn3DTria.mlb',['../_surface_normal_on3_d_tria_8mlb.html',1,'']]]
+  ['surfacenormalon3dtria_2emlb',['SurfaceNormalOn3DTria.mlb',['../_surface_normal_on3_d_tria_8mlb.html',1,'']]],
+  ['surfacenormalons2tria',['SurfaceNormalOnS2Tria',['../_surface_normal_on_s2_tria_8mlb.html#a2a39ab33418894aad6cc936ea222f868',1,'SurfaceNormalOnS2Tria.mlb']]],
+  ['surfacenormalons2tria_2emlb',['SurfaceNormalOnS2Tria.mlb',['../_surface_normal_on_s2_tria_8mlb.html',1,'']]]
 ];

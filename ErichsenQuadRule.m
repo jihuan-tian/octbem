@@ -10,6 +10,7 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
 				mesh_cells,
 				mesh_nodes,
 				nx_functor, ny_functor,
+				Jx_functor, Jy_functor,
 				mesh_size_estimate,
 				sobolev_function_space_order,
 				basis_function_polynomial_order,
@@ -55,6 +56,10 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
   ## calculating the cell normal vectors for \f$K_x\f$.
   ## @param ny_functor The functor depending on area coordinates for
   ## calculating the cell normal vectors for \f$K_y\f$.
+  ## @param Jx_functor The functor depending on area coordinates for
+  ## calculating the Jacobian determinant for \f$K_x\f$.
+  ## @param Jy_functor The functor depending on area coordinates for
+  ## calculating the Jacobian determinant for \f$K_y\f$.
   ## @param mesh_cell_range_estimate An estimate of the cell range, which is
   ## used for calculating quadrature order.
   ## @param mesh_size_estimate An estimate of the mesh size \f$h\f$, which is
@@ -101,7 +106,7 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       kx_cell_node_coord_list = mesh_nodes(kx_cell_node_indices, :);
       ky_cell_node_coord_list = mesh_nodes(ky_cell_node_indices, :);
       
-      ret = ErichsenQuadSamePanel(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor);
+      ret = ErichsenQuadSamePanel(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
     case 2			# Common edge
       ## fprintf(stderr(), "Erichsen1996Efficient: common edge case!\n");
       
@@ -159,7 +164,7 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       ky_shape_functions_for_geometry_reversed = ky_shape_functions_for_geometry(end:(-1):1);
       ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry_reversed(ky_node_permutation_indices);
       
-      ret = ErichsenQuadCommonEdge(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor);
+      ret = ErichsenQuadCommonEdge(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
     case 3			# Common vertex
       ## fprintf(stderr(), "Erichsen1996Efficient: common vertex case!\n");
       
@@ -196,7 +201,7 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
       ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry(ky_node_permutation_indices);
 
-      ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor);
+      ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
     case 4			# Regular
       ## fprintf(stderr(), "Erichsen1996Efficient: regular case!\n");
       
@@ -210,6 +215,6 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       ## Calculate the number of quadrature points.
       norder = ErichsenRegularQuadOrder(kernel_singularity_order, basis_function_polynomial_order, sobolev_function_space_order, mesh_size_estimate, panel_distance, galerkin_estimate_norm_index);
       
-      ret = ErichsenQuadRegular(kernel_function, norder, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor);
+      ret = ErichsenQuadRegular(kernel_function, norder, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
   endswitch
 endfunction

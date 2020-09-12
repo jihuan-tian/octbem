@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>octbem: /home/jihuan/文档/Documents/academic/FEM general/program/fem/ErichsenQuadRegular.mlb File Reference</title>
+<title>octbem: /home/jihuan/Projects/git/octbem/ErichsenQuadRegular.mlb File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('_erichsen_quad_regular_8mlb.html','');
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">/home/jihuan/文档/Documents/academic/FEM general/program/fem/ErichsenQuadRegular.mlb File Reference</div>  </div>
+<div class="title">/home/jihuan/Projects/git/octbem/ErichsenQuadRegular.mlb File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -168,12 +168,12 @@ $(document).ready(function(){initNavTree('_erichsen_quad_regular_8mlb.html','');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a61a4122f67ec00cb6097ab9f5a208acf"><td class="memItemLeft" align="right" valign="top">function   ret  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_erichsen_quad_regular_8mlb.html#a61a4122f67ec00cb6097ab9f5a208acf">ErichsenQuadRegular</a> (kernel_function, norder, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor)</td></tr>
-<tr class="memdesc:a61a4122f67ec00cb6097ab9f5a208acf"><td class="mdescLeft">&#160;</td><td class="mdescRight">ErichsenQuadRegular - Perform the regular integration using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
+<tr class="memitem:ae74297617372472997bda4a76e6c8d68"><td class="memItemLeft" align="right" valign="top">function   ret  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_erichsen_quad_regular_8mlb.html#ae74297617372472997bda4a76e6c8d68">ErichsenQuadRegular</a> (kernel_function, norder, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor)</td></tr>
+<tr class="memdesc:ae74297617372472997bda4a76e6c8d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">ErichsenQuadRegular - Perform the regular integration using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
 \[ \int_{\hat{K} \times \hat{K}} H_{loc}(\xi, \eta) k(\xi, \eta) \intd s(\xi) \intd s(\eta), \]
 </p>
-<p>.  <a href="#a61a4122f67ec00cb6097ab9f5a208acf">More...</a><br /></td></tr>
-<tr class="separator:a61a4122f67ec00cb6097ab9f5a208acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<p>.  <a href="#ae74297617372472997bda4a76e6c8d68">More...</a><br /></td></tr>
+<tr class="separator:ae74297617372472997bda4a76e6c8d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ErichsenQuadRegular - Perform the regular integration using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
@@ -181,8 +181,8 @@ Functions</h2></td></tr>
 </p>
 <p>. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a61a4122f67ec00cb6097ab9f5a208acf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61a4122f67ec00cb6097ab9f5a208acf">&#9670;&nbsp;</a></span>ErichsenQuadRegular()</h2>
+<a id="ae74297617372472997bda4a76e6c8d68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae74297617372472997bda4a76e6c8d68">&#9670;&nbsp;</a></span>ErichsenQuadRegular()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,7 +245,19 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>ny_functor</em>&#160;</td>
+          <td class="paramname"><em>ny_functor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>Jx_functor</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>Jy_functor</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -273,12 +285,14 @@ Functions</h2></td></tr>
     <tr><td class="paramname">ky_cell_node_coord_list</td><td>A list of node global coordinates for the cell \(K_y\). </td></tr>
     <tr><td class="paramname">nx_functor</td><td>The functor depending on area coordinates for calculating the cell normal vectors for \(K_x\). </td></tr>
     <tr><td class="paramname">ny_functor</td><td>The functor depending on area coordinates for calculating the cell normal vectors for \(K_y\). </td></tr>
+    <tr><td class="paramname">Jx_functor</td><td>The functor depending on area coordinates for calculating the Jacobian determinant for \(K_x\). </td></tr>
+    <tr><td class="paramname">Jy_functor</td><td>The functor depending on area coordinates for calculating the Jacobian determinant for \(K_y\). </td></tr>
     <tr><td class="paramname">ret</td><td>The quadrature value. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="reference">References <a class="el" href="_apply_quad_rule_8mlb.html#a4b755b5fc5e44c702273925fd28c23b9">ApplyQuadRule()</a>, <a class="el" href="_b_e_m_kernel_pullback_8mlb.html#adcd3883d0499ce0383938b101c2f31b2">BEMKernelPullback()</a>, and <a class="el" href="_global_surface_metric_on3_d_tria_8mlb.html#a56dcf978e75f6f678d0e466ae1da7c95">GlobalSurfaceMetricOn3DTria()</a>.</p>
+<p class="reference">References <a class="el" href="_apply_quad_rule_8mlb.html#a4b755b5fc5e44c702273925fd28c23b9">ApplyQuadRule()</a>, and <a class="el" href="_b_e_m_kernel_pullback_8mlb.html#adcd3883d0499ce0383938b101c2f31b2">BEMKernelPullback()</a>.</p>
 
 </div>
 </div>

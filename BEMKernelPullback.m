@@ -25,9 +25,9 @@ function pullback_kernel_values = BEMKernelPullback(xi, eta, nx_functor, ny_func
     x = AreaToGlobalCoords(xi, kx_shape_functions_for_geometry, kx_cell_node_coord_list);
     y = AreaToGlobalCoords(eta, ky_shape_functions_for_geometry, ky_cell_node_coord_list);
     ## Calculate the normal vectors located at \f$\xi\f$.
-    nx = nx_functor(xi, kx_cell_node_coord_list);
+    nx = nx_functor(xi);
     ## Calculate the normal vectors located at \f$\eta\f$;
-    ny = ny_functor(eta, ky_cell_node_coord_list);
+    ny = ny_functor(eta);
 
     ## Substitute the global coordinates \f$x\f$ and \f$y\f$ into the
     ## kernel function. N.B. The normal vector data may not be used or

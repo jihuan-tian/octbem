@@ -7,9 +7,15 @@ addpath("./stroud");
 pkg load fpl;
 pkg load msh;
 
+is_integration_on_curved_mesh = true;
+
 ## Read the mesh.
 mesh_filename = argv(){1};
+[path_name, file_name, file_ext] = fileparts(mesh_filename);
 problem_domain_mesh = ReadGmshTrias(mesh_filename);
+model_sphere_center = [0, 0, 0];
+model_sphere_radius = 1.0;
+
 ## Plot the mesh.
 figure;
 triplot3d(problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, "color", "r", "linestyle", "-", "marker", "o");
@@ -20,24 +26,26 @@ axis equal;
 axis off;
 hold off;
 
-## Calculate the distance of the mesh nodes to the origin.
-fprintf(stdout(), "Distance of mesh nodes to the origin:\n");
+## Calculate the distance of the mesh nodes to the sphere center.
+fprintf(stdout(), "Distance of mesh nodes to the sphere center:\n");
 for m = 1:problem_domain_mesh.number_of_nodes
-  nodes_to_origin_dists(m) = norm(problem_domain_mesh.mesh_nodes(m, :));
+  nodes_to_origin_dists(m) = norm(problem_domain_mesh.mesh_nodes(m, :) - model_sphere_center);
 endfor
 
-## Calculate the distance of the cell's center of gravity to the origin.
-fprintf(stdout(), "Distance of cell's center of gravity to the origin:\n");
+## Calculate the distance of the cell's center of gravity to the sphere center.
+fprintf(stdout(), "Distance of cell's center of gravity to the sphere center:\n");
 for m = 1:problem_domain_mesh.number_of_cells
-  cogs_to_origin_dists(m) = norm(problem_domain_mesh.cell_cogs(m, :));
+  cogs_to_origin_dists(m) = norm(problem_domain_mesh.cell_cogs(m, :) - model_sphere_center);
 endfor
 
 ## Calculate the distance of the end of surface normal vectors to the
-## origin, in order to verify that they actuall point outwards, i.e. the calculated distance should be larger than the cell's center of gravity to the origin.
-fprintf(stdout(), "Distance of cell surface normal vector end points to the origin:\n");
+## sphere center, in order to verify that they actuall point outwards,
+## i.e. the calculated distance should be larger than the cell's
+## center of gravity to the sphere center.
+fprintf(stdout(), "Distance of cell surface normal vector end points to the sphere center:\n");
 cell_normal_vector_endpoints = (problem_domain_mesh.cell_cogs + problem_domain_mesh.cell_normal_vectors);
 for m = 1:problem_domain_mesh.number_of_cells
-  cell_normal_to_origin_dists(m) = norm(cell_normal_vector_endpoints(m, :));
+  cell_normal_to_origin_dists(m) = norm(cell_normal_vector_endpoints(m, :) - model_sphere_center);
 endfor
 
 if (!isempty(find((cell_normal_to_origin_dists > cogs_to_origin_dists) == 0)))
@@ -48,6 +56,8 @@ endif
 x0 = [0.25, 0.25, 0.25];
 ## The exact solution:
 u_star = zeros(problem_domain_mesh.number_of_nodes, 1);
+## The functor for the exact solution.
+u_star_functor = @(x) 1.0 / 4.0 / pi / norm(x - x0);
 ## Boundary condition on the domain surface (assigned to each node):
 ## \f$\frac{\pdiff u}{\pdiff n}\f$, which is the normal derivative.
 neumann_bc = zeros(problem_domain_mesh.number_of_nodes, 1);
@@ -122,12 +132,18 @@ galerkin_estimate_norm_index = 0;
 ## Calculate \f$(v, \frac{1}{2}u)\f$.
 for e = 1:problem_domain_mesh.number_of_cells
   local_matrix = zeros(number_of_bases_in_test_function_space, number_of_bases_in_ansatz_function_space);
+  cell_node_indices = problem_domain_mesh.mesh_cells(e, :);
+  ## Get the cell Jacobian.
+  if (is_integration_on_curved_mesh)
+    cell_jacobian_functor = @(x) GlobalSurfaceMetricOnS2Tria(x, problem_domain_mesh.mesh_nodes(cell_node_indices, :), shape_function_space, model_sphere_center, model_sphere_radius);
+  else
+    cell_jacobian_functor = @(x) problem_domain_mesh.cell_surface_metrics(e);
+  endif
+  
   for i = 1:number_of_bases_in_test_function_space
     for j = 1:number_of_bases_in_ansatz_function_space
-      ## Get the cell Jacobian.
-      cell_jacobian_functor = @(x) problem_domain_mesh.cell_surface_metrics(e);
       local_matrix(i, j) = ApplyQuadRule(@(area_coord) 0.5 * test_function_space{i}(area_coord) * ansatz_function_space{j}(area_coord), fem_gauss_quad_2d_qpts, fem_gauss_quad_2d_qwts, cell_jacobian_functor) * triangle_unit_volume();
-      
+
       ## Assemble the local matrix to the global matrix.
       stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(e, j)) += local_matrix(i, j);
     endfor
@@ -148,17 +164,31 @@ neighboring_type_matrix = CalcPanelNeighboringTypes(problem_domain_mesh.mesh_cel
 
 ## Iterate over each field cell.
 for e = 1:problem_domain_mesh.number_of_cells
+  if (is_integration_on_curved_mesh)
+    Jx = @(kx_area_coord) GlobalSurfaceMetricOnS2Tria(kx_area_coord, problem_domain_mesh.mesh_nodes(problem_domain_mesh.mesh_cells(e, :), :), shape_function_space, model_sphere_center, model_sphere_radius);
+    nx = @(kx_area_coord) SurfaceNormalOnS2Tria(kx_area_coord, problem_domain_mesh.mesh_nodes(problem_domain_mesh.mesh_cells(e, :), :), shape_function_space, model_sphere_center, model_sphere_radius);
+  endif
   ## Iterate over each source cell.
   for f = 1:problem_domain_mesh.number_of_cells
+    if (is_integration_on_curved_mesh)
+      Jy = @(ky_area_coord) GlobalSurfaceMetricOnS2Tria(ky_area_coord, problem_domain_mesh.mesh_nodes(problem_domain_mesh.mesh_cells(f, :), :), shape_function_space, model_sphere_center, model_sphere_radius);
+      ny = @(ky_area_coord) SurfaceNormalOnS2Tria(ky_area_coord, problem_domain_mesh.mesh_nodes(problem_domain_mesh.mesh_cells(f, :), :), shape_function_space, model_sphere_center, model_sphere_radius);
+    endif
     ## Iterate over each test function, which is associated with the
     ## field cell.
     for i = 1:number_of_bases_in_test_function_space
       ## Iterate over each ansatz function, which is associated with
       ## the source cell.
       for j = 1:number_of_bases_in_ansatz_function_space
-	stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) +=	ErichsenQuadRuleFlat(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.min_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	if (is_integration_on_curved_mesh)
+	  stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleS2(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, nx, ny, Jx, Jy, model_sphere_center, model_sphere_radius, problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
 	
-	rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.min_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	  rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleS2(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, nx, ny, Jx, Jy, model_sphere_center, model_sphere_radius, problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	else
+	  stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	
+	  rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	endif
       endfor
     endfor
     
@@ -175,10 +205,22 @@ rhs_vector = rhs_matrix * neumann_bc;
 u = stiffness_matrix \ rhs_vector;
 
 ## Calculate the relative L2 error.
-l2_err = CalcL2Norm(u - u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d) / CalcL2Norm(u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+if (is_integration_on_curved_mesh)
+  ## l2_err = CalcL2NormS2(u - u_star, ansatz_function_space, shape_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d, model_sphere_center, model_sphere_radius) / CalcL2NormS2(u_star, shape_function_space, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d, model_sphere_center, model_sphere_radius)
+  l2_err = CalcL2ErrorS2(u, u_star_functor, ansatz_function_space, shape_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d, model_sphere_center, model_sphere_radius)
+else
+  ## l2_err = CalcL2Norm(u - u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d) / CalcL2Norm(u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+  l2_err = CalcL2Error(u, u_star_functor, ansatz_function_space, shape_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+endif
 
 ## Calculate  the relative L1 error.
-l1_err = CalcL1Norm(u - u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d) / CalcL1Norm(u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+if (is_integration_on_curved_mesh)
+  ## l1_err = CalcL1NormS2(u - u_star, ansatz_function_space, shape_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d, model_sphere_center, model_sphere_radius) / CalcL1NormS2(u_star, shape_function_space, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d, model_sphere_center, model_sphere_radius)
+  l1_err = CalcL1ErrorS2(u, u_star_functor, ansatz_function_space, shape_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d, model_sphere_center, model_sphere_radius)
+else
+  ## l1_err = CalcL1Norm(u - u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d) / CalcL1Norm(u_star, ansatz_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+  l1_err = CalcL1Error(u, u_star_functor, ansatz_function_space, shape_function_space, 1:problem_domain_mesh.number_of_cells, problem_domain_mesh, fem_gauss_quad_norder_2d)
+endif
 
 ## Plot results.
 NewFigure;
@@ -187,3 +229,6 @@ plot(u, "ro-");
 plot(u_star, "b+-");
 legend({"u (BEM)", "u (analytical)"});
 hold off;
+
+## Save the workspace.
+save("-binary", strcat(file_name, ".bin"));

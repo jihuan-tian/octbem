@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>octbem: /home/jihuan/文档/Documents/academic/FEM general/program/fem/GlobalSurfaceMetricOn3DTria.mlb File Reference</title>
+<title>octbem: /home/jihuan/Projects/git/octbem/GlobalSurfaceMetricOn3DTria.mlb File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('_global_surface_metric_on3_d_tria_8mlb
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">/home/jihuan/文档/Documents/academic/FEM general/program/fem/GlobalSurfaceMetricOn3DTria.mlb File Reference</div>  </div>
+<div class="title">/home/jihuan/Projects/git/octbem/GlobalSurfaceMetricOn3DTria.mlb File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -165,29 +165,29 @@ $(document).ready(function(){initNavTree('_global_surface_metric_on3_d_tria_8mlb
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a56dcf978e75f6f678d0e466ae1da7c95"><td class="memItemLeft" align="right" valign="top">function   surface_metric  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_global_surface_metric_on3_d_tria_8mlb.html#a56dcf978e75f6f678d0e466ae1da7c95">GlobalSurfaceMetricOn3DTria</a> (area_coordinates, node_global_coords)</td></tr>
-<tr class="memdesc:a56dcf978e75f6f678d0e466ae1da7c95"><td class="mdescLeft">&#160;</td><td class="mdescRight">GlobalSurfaceMetricOn3DTria - Calculate the global surface metric from area coordinate to global coordinate on a triangle in 3D space.  <a href="#a56dcf978e75f6f678d0e466ae1da7c95">More...</a><br /></td></tr>
-<tr class="separator:a56dcf978e75f6f678d0e466ae1da7c95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab750d7f83d80c86bf585186dc7fea511"><td class="memItemLeft" align="right" valign="top">function   surface_metrics  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_global_surface_metric_on3_d_tria_8mlb.html#ab750d7f83d80c86bf585186dc7fea511">GlobalSurfaceMetricOn3DTria</a> (area_coordinates, node_global_coords)</td></tr>
+<tr class="memdesc:ab750d7f83d80c86bf585186dc7fea511"><td class="mdescLeft">&#160;</td><td class="mdescRight">GlobalSurfaceMetricOn3DTria - Calculate the global surface metric from area coordinate to global coordinate on a triangle in 3D space.  <a href="#ab750d7f83d80c86bf585186dc7fea511">More...</a><br /></td></tr>
+<tr class="separator:ab750d7f83d80c86bf585186dc7fea511"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>GlobalSurfaceMetricOn3DTria - Calculate the global surface metric from area coordinate to global coordinate on a triangle in 3D space. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">area_coordinates</td><td>A list of area coordinates on each of which the global Jacobian. matrix is to be evaluated. They are stored as an N*3 or N*2 matrix depending on if 3-component or 2-component area coordinates are used. </td></tr>
+    <tr><td class="paramname">area_coordinates</td><td>A list of area coordinates on each of which the global Jacobian matrix is to be evaluated. They are stored as an N*3 or N*2 matrix depending on if 3-component or 2-component area coordinates are used. </td></tr>
     <tr><td class="paramname">node_global_coords</td><td>A list of global coordinates for the supporting nodes in the reference cell in the same order as the shape functions, which is stored as an N*3 matrix. </td></tr>
-    <tr><td class="paramname">surface_metric</td><td>The calculated surface metric. </td></tr>
+    <tr><td class="paramname">surface_metrics</td><td>The calculated surface metric at each point. </td></tr>
   </table>
   </dd>
 </dl>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a56dcf978e75f6f678d0e466ae1da7c95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56dcf978e75f6f678d0e466ae1da7c95">&#9670;&nbsp;</a></span>GlobalSurfaceMetricOn3DTria()</h2>
+<a id="ab750d7f83d80c86bf585186dc7fea511"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab750d7f83d80c86bf585186dc7fea511">&#9670;&nbsp;</a></span>GlobalSurfaceMetricOn3DTria()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">function   surface_metric  = GlobalSurfaceMetricOn3DTria </td>
+          <td class="memname">function   surface_metrics  = GlobalSurfaceMetricOn3DTria </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>area_coordinates</em>, </td>
@@ -209,14 +209,12 @@ Functions</h2></td></tr>
 <p>GlobalSurfaceMetricOn3DTria - Calculate the global surface metric from area coordinate to global coordinate on a triangle in 3D space. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">area_coordinates</td><td>A list of area coordinates on each of which the global Jacobian. matrix is to be evaluated. They are stored as an N*3 or N*2 matrix depending on if 3-component or 2-component area coordinates are used. </td></tr>
+    <tr><td class="paramname">area_coordinates</td><td>A list of area coordinates on each of which the global Jacobian matrix is to be evaluated. They are stored as an N*3 or N*2 matrix depending on if 3-component or 2-component area coordinates are used. </td></tr>
     <tr><td class="paramname">node_global_coords</td><td>A list of global coordinates for the supporting nodes in the reference cell in the same order as the shape functions, which is stored as an N*3 matrix. </td></tr>
-    <tr><td class="paramname">surface_metric</td><td>The calculated surface metric. </td></tr>
+    <tr><td class="paramname">surface_metrics</td><td>The calculated surface metric at each point. </td></tr>
   </table>
   </dd>
 </dl>
-
-<p class="reference">Referenced by <a class="el" href="_erichsen_quad_regular_8mlb.html#a61a4122f67ec00cb6097ab9f5a208acf">ErichsenQuadRegular()</a>.</p>
 
 </div>
 </div>

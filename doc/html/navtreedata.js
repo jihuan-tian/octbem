@@ -13,7 +13,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_apply_quad_rule_8mlb.html"
+"_apply_quad_rule_8mlb.html",
+"files.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

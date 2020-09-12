@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>octbem: /home/jihuan/文档/Documents/academic/FEM general/program/fem/ErichsenQuadRuleFlat.mlb File Reference</title>
+<title>octbem: /home/jihuan/Projects/git/octbem/ErichsenQuadRuleFlat.mlb File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('_erichsen_quad_rule_flat_8mlb.html',''
   <div class="summary">
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">/home/jihuan/文档/Documents/academic/FEM general/program/fem/ErichsenQuadRuleFlat.mlb File Reference</div>  </div>
+<div class="title">/home/jihuan/Projects/git/octbem/ErichsenQuadRuleFlat.mlb File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -168,12 +168,12 @@ $(document).ready(function(){initNavTree('_erichsen_quad_rule_flat_8mlb.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a17ff300d0cbf5ae4a752e0c121644b63"><td class="memItemLeft" align="right" valign="top">function   ret  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_erichsen_quad_rule_flat_8mlb.html#a17ff300d0cbf5ae4a752e0c121644b63">ErichsenQuadRuleFlat</a> (kernel_function, kernel_singularity_order, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_index, ky_cell_index, mesh_cells, mesh_nodes, nx, ny, Jx, Jy, mesh_size_estimate, sobolev_function_space_order, basis_function_polynomial_order, galerkin_estimate_norm_index)</td></tr>
-<tr class="memdesc:a17ff300d0cbf5ae4a752e0c121644b63"><td class="mdescLeft">&#160;</td><td class="mdescRight">ErichsenQuadRuleFlat - Perform integration on flat panels using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
+<tr class="memitem:abae51ce076f695e42f448a64ee850ef2"><td class="memItemLeft" align="right" valign="top">function   ret  =&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_erichsen_quad_rule_flat_8mlb.html#abae51ce076f695e42f448a64ee850ef2">ErichsenQuadRuleFlat</a> (kernel_function, kernel_singularity_order, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_index, ky_cell_index, panel_distance_matrix, neighboring_type_matrix, mesh_cells, mesh_nodes, nx, ny, Jx, Jy, mesh_size_estimate, sobolev_function_space_order, basis_function_polynomial_order, galerkin_estimate_norm_index)</td></tr>
+<tr class="memdesc:abae51ce076f695e42f448a64ee850ef2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ErichsenQuadRuleFlat - Perform integration on flat panels using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
 \[ \int_{\hat{K} \times \hat{K}} H_{loc}(\xi, \eta) k(\xi, \eta) \intd s(\xi) \intd s(\eta), \]
 </p>
-<p>.  <a href="#a17ff300d0cbf5ae4a752e0c121644b63">More...</a><br /></td></tr>
-<tr class="separator:a17ff300d0cbf5ae4a752e0c121644b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<p>.  <a href="#abae51ce076f695e42f448a64ee850ef2">More...</a><br /></td></tr>
+<tr class="separator:abae51ce076f695e42f448a64ee850ef2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ErichsenQuadRuleFlat - Perform integration on flat panels using the method in Erichsen1996Efficient. The integral is </p><p class="formulaDsp">
@@ -181,8 +181,8 @@ Functions</h2></td></tr>
 </p>
 <p>. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a17ff300d0cbf5ae4a752e0c121644b63"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17ff300d0cbf5ae4a752e0c121644b63">&#9670;&nbsp;</a></span>ErichsenQuadRuleFlat()</h2>
+<a id="abae51ce076f695e42f448a64ee850ef2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abae51ce076f695e42f448a64ee850ef2">&#9670;&nbsp;</a></span>ErichsenQuadRuleFlat()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -234,6 +234,18 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>ky_cell_index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>panel_distance_matrix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>neighboring_type_matrix</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -319,6 +331,8 @@ Functions</h2></td></tr>
     <tr><td class="paramname">ky_shape_functions_for_geometry</td><td>A list of geometric shape functions for cell \(K_y\). </td></tr>
     <tr><td class="paramname">kx_cell_index</td><td>The cell index for \(K_x\). </td></tr>
     <tr><td class="paramname">ky_cell_index</td><td>The cell index for \(K_y\). </td></tr>
+    <tr><td class="paramname">panel_distance_matrix</td><td>Distance between each pair of panels. </td></tr>
+    <tr><td class="paramname">neighboring_type_matrix</td><td>Neighboring type between each pair of panels. </td></tr>
     <tr><td class="paramname">mesh_cells</td><td>All cells in the mesh. </td></tr>
     <tr><td class="paramname">mesh_nodes</td><td>All nodes in the mesh. </td></tr>
     <tr><td class="paramname">nx</td><td>The cell normal vector for \(K_x\). </td></tr>

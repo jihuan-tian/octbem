@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['planartos2tria',['PlanarToS2Tria',['../_planar_to_s2_tria_8mlb.html#a14f633b97b89928b2a6b539f72df1ec2',1,'PlanarToS2Tria.mlb']]],
+  ['planartos2triaj',['PlanarToS2TriaJ',['../_planar_to_s2_tria_j_8mlb.html#aead2eaada9ef63d5b28fb9004b67f127',1,'PlanarToS2TriaJ.mlb']]],
   ['plot2darc',['Plot2DArc',['../_plot2_d_arc_8mlb.html#a3348878d568fc18d4770654555facf90',1,'Plot2DArc.mlb']]],
   ['plot2dcircle',['Plot2DCircle',['../_plot2_d_circle_8mlb.html#a15b40621476d9ca898e8fb4ba8da2f12',1,'Plot2DCircle.mlb']]],
   ['plot2dellipse',['Plot2DEllipse',['../_plot2_d_ellipse_8mlb.html#aea4ed61dc69fc2531b6784202c87dc02',1,'Plot2DEllipse.mlb']]],

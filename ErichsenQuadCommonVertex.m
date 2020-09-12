@@ -5,7 +5,8 @@ function ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta,
 					ky_shape_functions_for_geometry,
 					kx_cell_node_coord_list,
 					ky_cell_node_coord_list,
-					nx_functor, ny_functor)
+					nx_functor, ny_functor,
+					Jx_functor, Jy_functor)
   ## ErichsenQuadCommonVertex - Perform the common vertex integration using the method in
   ## Erichsen1996Efficient. The integral is
   ## \f[
@@ -44,11 +45,11 @@ function ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta,
   ## calculating the cell normal vectors for \f$K_x\f$.
   ## @param ny_functor The functor depending on area coordinates for
   ## calculating the cell normal vectors for \f$K_y\f$.
+  ## @param Jx_functor The functor depending on area coordinates for
+  ## calculating the Jacobian determinant for \f$K_x\f$.
+  ## @param Jy_functor The functor depending on area coordinates for
+  ## calculating the Jacobian determinant for \f$K_y\f$.
   ## @param ret The quadrature value.
-  
-  ## Calculate the surface metrics for \f$K_x\f$ and \f$K_y\f$.
-  Jx = @(kx_area_coord) GlobalSurfaceMetricOn3DTria(kx_area_coord, kx_cell_node_coord_list);
-  Jy = @(ky_area_coord) GlobalSurfaceMetricOn3DTria(ky_area_coord, ky_cell_node_coord_list);
   
   ## Generate the pullback of the kernel function \f$k(x, y)\f$.
   k_loc = @(kx_area_coord, ky_area_coord) BEMKernelPullback(kx_area_coord, ky_area_coord, nx_functor, ny_functor, kernel_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list);

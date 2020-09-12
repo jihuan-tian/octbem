@@ -1,5 +1,7 @@
 var searchData=
 [
+  ['planartos2tria_2emlb',['PlanarToS2Tria.mlb',['../_planar_to_s2_tria_8mlb.html',1,'']]],
+  ['planartos2triaj_2emlb',['PlanarToS2TriaJ.mlb',['../_planar_to_s2_tria_j_8mlb.html',1,'']]],
   ['plot2darc_2emlb',['Plot2DArc.mlb',['../_plot2_d_arc_8mlb.html',1,'']]],
   ['plot2dcircle_2emlb',['Plot2DCircle.mlb',['../_plot2_d_circle_8mlb.html',1,'']]],
   ['plot2dellipse_2emlb',['Plot2DEllipse.mlb',['../_plot2_d_ellipse_8mlb.html',1,'']]],

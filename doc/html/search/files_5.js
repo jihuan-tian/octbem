@@ -15,5 +15,6 @@ var searchData=
   ['globaljacobideton3dtria_2emlb',['GlobalJacobiDetOn3DTria.mlb',['../_global_jacobi_det_on3_d_tria_8mlb.html',1,'']]],
   ['globaljacobion3dtria_2emlb',['GlobalJacobiOn3DTria.mlb',['../_global_jacobi_on3_d_tria_8mlb.html',1,'']]],
   ['globalsurfacemetricon3dflattria_2emlb',['GlobalSurfaceMetricOn3DFlatTria.mlb',['../_global_surface_metric_on3_d_flat_tria_8mlb.html',1,'']]],
-  ['globalsurfacemetricon3dtria_2emlb',['GlobalSurfaceMetricOn3DTria.mlb',['../_global_surface_metric_on3_d_tria_8mlb.html',1,'']]]
+  ['globalsurfacemetricon3dtria_2emlb',['GlobalSurfaceMetricOn3DTria.mlb',['../_global_surface_metric_on3_d_tria_8mlb.html',1,'']]],
+  ['globalsurfacemetricons2tria_2emlb',['GlobalSurfaceMetricOnS2Tria.mlb',['../_global_surface_metric_on_s2_tria_8mlb.html',1,'']]]
 ];

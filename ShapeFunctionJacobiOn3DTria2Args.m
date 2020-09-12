@@ -1,7 +1,23 @@
 function jacobi_matrix = ShapeFunctionJacobiOn3DTria2Args(order)
-  ## ShapeFunctionJacobiOn3DTria2Args - Generate the Jacobian matrix for shape
-  ## functions constructed on the reference triangle depending on the two area
-  ## coordinates.
+  ## ShapeFunctionJacobiOn3DTria2Args - Generate the Jacobian matrix
+  ## for shape functions constructed on the reference triangle
+  ## depending on the two area coordinate components \f$[\xi
+  ## ,\eta]\f$. Let the area coordinates be represented as \f$[\xi,
+  ## \eta]\f$. The Jacobian matrix has the following form:
+  ## \f$\f$
+  ## \begin{matrix}
+  ##   \frac{\pdiff N_1}{\xi} & \frac{\pdiff N_1}{\eta} \\
+  ##   \frac{\pdiff N_2}{\xi} & \frac{\pdiff N_2}{\eta} \\
+  ##                   \cdots &                  \cdots \\
+  ##   \frac{\pdiff N_n}{\xi} & \frac{\pdiff N_n}{\eta}
+  ## \end{matrix},
+  ## \f$\f$
+  ## where \f$n\f$ is the number of DOFs or shape functions in the
+  ## triangle cell. It can be calculated from the shape function order
+  ## $p$ as
+  ## \f$\f$
+  ## n = \frac{(p+1)(p+2)}{2}.
+  ## \f$\f$
   ## @param order The basis function order.
   ## @param jacobi_matrix The Jacobi matrix for shape functions with respect to
   ## area coordinates.
