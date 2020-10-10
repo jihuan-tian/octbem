@@ -1,7 +1,7 @@
 function surface_normals = SurfaceNormalOn3DTria(area_coordinates, node_global_coords)
   ## SurfaceNormalOn3DTria - Calculate the surface normal vectors located at
   ## each specified area coordinates.
-  ## @param  A list of area coordinates on each of which the global Jacobi
+  ## @param area_coordinates A list of area coordinates on each of which the global Jacobi
   ## matrix is to be evaluated. They are stored as an N*3 or N*2 matrix
   ## depending on if 3-component or 2-component area coordinates are used.
   ## @param node_global_coords A list of global coordinates for the supporting
@@ -30,9 +30,9 @@ function surface_normals = SurfaceNormalOn3DTria(area_coordinates, node_global_c
   ## component Jacobi determinants that are cyclically related to the 3D global
   ## coordinate components, namely, yz, zx and xy.
   surface_normals = zeros(L, 3);
-  surface_normals(:, 1) = GlobalJacobiDetOn3DTria(area_coordinates, [node_global_coords(:, 2), node_global_coords(:, 3)], shape_function_jacobi_matrix);
-  surface_normals(:, 2) = GlobalJacobiDetOn3DTria(area_coordinates, [node_global_coords(:, 3), node_global_coords(:, 1)], shape_function_jacobi_matrix);
-  surface_normals(:, 3) = GlobalJacobiDetOn3DTria(area_coordinates, [node_global_coords(:, 1), node_global_coords(:, 2)], shape_function_jacobi_matrix);
+  surface_normals(:, 1) = GlobalJacobiDet(area_coordinates, [node_global_coords(:, 2), node_global_coords(:, 3)], shape_function_jacobi_matrix);
+  surface_normals(:, 2) = GlobalJacobiDet(area_coordinates, [node_global_coords(:, 3), node_global_coords(:, 1)], shape_function_jacobi_matrix);
+  surface_normals(:, 3) = GlobalJacobiDet(area_coordinates, [node_global_coords(:, 1), node_global_coords(:, 2)], shape_function_jacobi_matrix);
   ## Normalize the normal vectors.
   surface_normals = surface_normals ./ sqrt(sumsq(surface_normals, 2));
 endfunction

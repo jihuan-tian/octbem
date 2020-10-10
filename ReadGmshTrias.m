@@ -20,10 +20,12 @@ function gmsh_mesh_obj = ReadGmshTrias(gmsh_msh_file_name)
   ##   zigzag order.
   ##   cell_ranges: The ranges of all cells.
   ##   min_cell_range: The minimum mesh size \f$h\f$.
+  ##   max_cell_range: The maximum mesh size \f$h\f$.
   ##   cell_surface_metrics: Calculate the surface metric from the reference
   ##   cell to each real cell, which is the squared sum of the three
   ##   two-coordinate-component Jacobians.
-  ##   cell_normal_vectors: Calculate the surface normal vector for each cell.
+  ##   cell_normal_vectors: Calculate the surface normal vector for
+  ##   each cell, assuming it is planar.
 
   ## Get the mesh data size.
   [gmsh_mesh_obj.number_of_nodes, gmsh_mesh_obj.space_dim, gmsh_mesh_obj.number_of_cells, number_of_nodes_in_cell] = gmsh_size_read(gmsh_msh_file_name);
@@ -60,7 +62,7 @@ function gmsh_mesh_obj = ReadGmshTrias(gmsh_msh_file_name)
     endswitch
 
     ## Calculate the center of gravity of the current cell.
-    gmsh_mesh_obj.cell_cogs(m, :) = TriaCenterOfGravity(cell_corner_nodes);
+    gmsh_mesh_obj.cell_cogs(m, :) = PolygonCenterOfGravity(cell_corner_nodes);
   endfor
   
   gmsh_mesh_obj.min_cell_range = min(gmsh_mesh_obj.cell_ranges);

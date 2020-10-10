@@ -98,6 +98,8 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
   ## points.
   [norder_for_eta, norder_for_omega] = ErichsenSingularQuadOrder(basis_function_polynomial_order, sobolev_function_space_order, mesh_size_estimate);
 
+  ret = 0;
+
   switch (cell_neighboring_type)
     case 1			# Identical
       ## fprintf(stderr(), "Erichsen1996Efficient: same panel case!\n");
@@ -157,14 +159,24 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       kx_cell_node_coord_list = mesh_nodes(kx_cell_node_indices_perm, :);
       ky_cell_node_coord_list = mesh_nodes(ky_cell_node_indices_perm, :);
 
-      ## It should be noted that the shape functions for describing the geometry
-      ## of the cells should also be permuted.
-      kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
-      ## Reverse the ordering of the shape functions on cell Ky.
-      ky_shape_functions_for_geometry_reversed = ky_shape_functions_for_geometry(end:(-1):1);
-      ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry_reversed(ky_node_permutation_indices);
-      
-      ret = ErichsenQuadCommonEdge(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
+      ## Overwrite the input Jx and Jy, nx and ny, because the list of cell
+      ## nodes are permutated.
+      Jx_functor = @(kx_area_coord) GlobalSurfaceMetricOn3DTria(kx_area_coord, kx_cell_node_coord_list);
+      nx_functor = @(kx_area_coord) SurfaceNormalOn3DTria(kx_area_coord, kx_cell_node_coord_list);
+      Jy_functor = @(ky_area_coord) GlobalSurfaceMetricOn3DTria(ky_area_coord, ky_cell_node_coord_list);
+      ## Because the node order in Ky is reversed, the normal vector should be negated.
+      ny_functor = @(ky_area_coord) -SurfaceNormalOn3DTria(ky_area_coord, ky_cell_node_coord_list);
+
+      ## 2020-10-04: The following reordering of shape functions is redundant.
+      ## ## It should be noted that the shape functions for describing the geometry
+      ## ## of the cells should also be permuted.
+      ## kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
+      ## ## Reverse the ordering of the shape functions on cell Ky.
+      ## ky_shape_functions_for_geometry_reversed = ky_shape_functions_for_geometry(end:(-1):1);
+      ## ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry_reversed(ky_node_permutation_indices);
+      ## ret = ErichsenQuadCommonEdge(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
+
+      ret = ErichsenQuadCommonEdge(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
     case 3			# Common vertex
       ## fprintf(stderr(), "Erichsen1996Efficient: common vertex case!\n");
       
@@ -196,12 +208,21 @@ function ret = ErichsenQuadRule(kernel_function, kernel_singularity_order,
       kx_cell_node_coord_list = mesh_nodes(kx_cell_node_indices_perm, :);
       ky_cell_node_coord_list = mesh_nodes(ky_cell_node_indices_perm, :);
 
-      ## It should be noted that the shape functions for describing the geometry
-      ## of the cells should also be permuted.
-      kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
-      ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry(ky_node_permutation_indices);
+      ## Overwrite the input Jx and Jy, nx and ny, because the list of cell
+      ## nodes are permutated.
+      Jx_functor = @(kx_area_coord) GlobalSurfaceMetricOn3DTria(kx_area_coord, kx_cell_node_coord_list);
+      nx_functor = @(kx_area_coord) SurfaceNormalOn3DTria(kx_area_coord, kx_cell_node_coord_list);
+      Jy_functor = @(ky_area_coord) GlobalSurfaceMetricOn3DTria(ky_area_coord, ky_cell_node_coord_list);
+      ny_functor = @(ky_area_coord) SurfaceNormalOn3DTria(ky_area_coord, ky_cell_node_coord_list);
 
-      ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
+      ## 2020-10-04: The following reordering of shape functions is redundant.
+      ## ## It should be noted that the shape functions for describing the geometry
+      ## ## of the cells should also be permuted.
+      ## kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
+      ## ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry(ky_node_permutation_indices);
+      ## ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
+
+      ret = ErichsenQuadCommonVertex(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx_functor, ny_functor, Jx_functor, Jy_functor);
     case 4			# Regular
       ## fprintf(stderr(), "Erichsen1996Efficient: regular case!\n");
       

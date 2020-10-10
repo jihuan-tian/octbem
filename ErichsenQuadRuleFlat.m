@@ -153,14 +153,16 @@ function ret = ErichsenQuadRuleFlat(kernel_function, kernel_singularity_order,
       kx_cell_node_coord_list = mesh_nodes(kx_cell_node_indices_perm, :);
       ky_cell_node_coord_list = mesh_nodes(ky_cell_node_indices_perm, :);
 
-      ## It should be noted that the shape functions for describing the geometry
-      ## of the cells should also be permuted.
-      kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
-      ## Reverse the ordering of the shape functions on cell Ky.
-      ky_shape_functions_for_geometry_reversed = ky_shape_functions_for_geometry(end:(-1):1);
-      ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry_reversed(ky_node_permutation_indices);
-      
-      ret = ErichsenQuadCommonEdgeFlat(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx, ny, Jx, Jy);
+      ## 2020-10-04: The following reordering of shape functions is redundant.
+      ## ## It should be noted that the shape functions for describing the geometry
+      ## ## of the cells should also be permuted.
+      ## kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
+      ## ## Reverse the ordering of the shape functions on cell Ky.
+      ## ky_shape_functions_for_geometry_reversed = ky_shape_functions_for_geometry(end:(-1):1);
+      ## ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry_reversed(ky_node_permutation_indices);
+      ## ret = ErichsenQuadCommonEdgeFlat(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx, ny, Jx, Jy);
+
+      ret = ErichsenQuadCommonEdgeFlat(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx, ny, Jx, Jy);
     case 3			# Common vertex
       ## fprintf(stderr(), "Erichsen1996Efficient: common vertex case!\n");
       
@@ -192,12 +194,14 @@ function ret = ErichsenQuadRuleFlat(kernel_function, kernel_singularity_order,
       kx_cell_node_coord_list = mesh_nodes(kx_cell_node_indices_perm, :);
       ky_cell_node_coord_list = mesh_nodes(ky_cell_node_indices_perm, :);
 
-      ## It should be noted that the shape functions for describing the geometry
-      ## of the cells should also be permuted.
-      kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
-      ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry(ky_node_permutation_indices);
-
-      ret = ErichsenQuadCommonVertexFlat(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx, ny, Jx, Jy);
+      ## 2020-10-04: The following reordering of shape functions is redundant.
+      ## ## It should be noted that the shape functions for describing the geometry
+      ## ## of the cells should also be permuted.
+      ## kx_shape_functions_for_geometry_perm = kx_shape_functions_for_geometry(kx_node_permutation_indices);
+      ## ky_shape_functions_for_geometry_perm = ky_shape_functions_for_geometry(ky_node_permutation_indices);
+      ## ret = ErichsenQuadCommonVertexFlat(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry_perm, ky_shape_functions_for_geometry_perm, kx_cell_node_coord_list, ky_cell_node_coord_list, nx, ny, Jx, Jy);
+      
+      ret = ErichsenQuadCommonVertexFlat(kernel_function, norder_for_eta, norder_for_omega, kx_basis_function, ky_basis_function, kx_shape_functions_for_geometry, ky_shape_functions_for_geometry, kx_cell_node_coord_list, ky_cell_node_coord_list, nx, ny, Jx, Jy);
     case 4			# Regular
       ## fprintf(stderr(), "Erichsen1996Efficient: regular case!\n");
       

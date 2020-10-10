@@ -11,6 +11,6 @@ function s2_tria_coords = PlanarToS2Tria(planar_tria_coords,
   ## S2 triangle.
 
   for m = 1:size(planar_tria_coords, 1)
-    s2_tria_coords(m, :) = (planar_tria_coords(m, :) - sphere_center) / norm(planar_tria_coords(m, :) - sphere_center) * sphere_radius + sphere_center;
+    s2_tria_coords(m, :) = NormalizeVect(planar_tria_coords(m, :) - sphere_center) * sphere_radius + sphere_center;
   endfor
 endfunction

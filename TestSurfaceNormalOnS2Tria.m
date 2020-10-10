@@ -52,14 +52,20 @@ for e = 1:problem_domain_mesh.number_of_cells
   cell_node_indices = problem_domain_mesh.mesh_cells(e, :);
 
   ## Calculate the surface normal vector at each quadrature point in
-  ## the S2 triangle.
+  ## the S2 triangle. The default direction is inside the sphere
+  ## domain.
   surface_normals = SurfaceNormalOnS2Tria(fem_gauss_quad_2d_qpts, problem_domain_mesh.mesh_nodes(cell_node_indices, :), shape_function_space, model_sphere_center, model_sphere_radius);
 
-  ## Correct the surface normal direction to outward.
+  ## Correct the surface normal direction to outward for
+  ## visualization.
   surface_normals = -surface_normals;
 
   ## Calculate the root points of the surface normal vectors.
   surface_normal_roots = AreaToGlobalCoordsOnS2(fem_gauss_quad_2d_qpts, shape_function_space, problem_domain_mesh.mesh_nodes(cell_node_indices, :), model_sphere_center, model_sphere_radius);
+  ## Verify the distance of the surface normal roots to the model sphere center.
+  for m = 1:size(surface_normal_roots, 1)
+    norm(surface_normal_roots(m, :) - model_sphere_center)
+  endfor
 
   ## Plot the surface normal vectors.
   Plot3DAffineVectors(surface_normal_roots, surface_normals / 4);

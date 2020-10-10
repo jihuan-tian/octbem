@@ -18,7 +18,7 @@ function L2_norm = CalcL2NormForExpr(functor, shape_functions_for_geometry,
   [qpts_xi1, qpts_xi2, qwts] = triangle_unit_product_set(quad_order);
   qpts = [qpts_xi1', qpts_xi2'];
   qwts = qwts';
-  quad_point_num = length(qwts);
+  quad_point_num = size(qwts, 1);
 
   L2_norm = 0;
 

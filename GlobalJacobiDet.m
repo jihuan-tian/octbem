@@ -1,6 +1,6 @@
-function global_jacobi_det = GlobalJacobiDetOn3DTria(area_coordinates, node_global_coord_components, shape_function_jacobi_matrix)
-  ## GlobalJacobiOn3DTria - Calculate the Jacobi determinant from area coordinate to
-  ## global coordinate on a triangle in 3D space.
+function global_jacobi_det = GlobalJacobiDet(area_coordinates, node_global_coord_components, shape_function_jacobi_matrix)
+  ## GlobalJacobiDet - Calculate the Jacobi determinant from
+  ## area coordinate to global coordinate on a triangle in 3D space.
   ## @param  A list of area coordinates on each of which the global Jacobi
   ## matrix is to be evaluated. They are stored as an N*3 or N*2 matrix
   ## depending on if 3-component or 2-component area coordinates are used.
@@ -15,5 +15,5 @@ function global_jacobi_det = GlobalJacobiDetOn3DTria(area_coordinates, node_glob
   ## @param global_jacobi_det The calculated list of Jacobi determinants
   ## evaluated at each area coordinate.
 
-  global_jacobi_det = cellfun(@(x) abs(det(x)), GlobalJacobiOn3DTria(area_coordinates, node_global_coord_components, shape_function_jacobi_matrix));
+  global_jacobi_det = cellfun(@(x) det(x), GlobalJacobiMatrix(area_coordinates, node_global_coord_components, shape_function_jacobi_matrix));
 endfunction

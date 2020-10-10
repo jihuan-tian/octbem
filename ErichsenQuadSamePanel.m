@@ -57,7 +57,7 @@ function ret = ErichsenQuadSamePanel(kernel_function, norder_for_eta,
   
   ## Generate the pullback of \f$H_loc\f$ to the reference cell
   ## \f$\hat{K}_x \times \hat{K}_y\f$.
-  H_loc = @(kx_area_coord, ky_area_coord) Jx(kx_area_coord) * Jy(ky_area_coord) * kx_basis_function(kx_area_coord) * ky_basis_function(ky_area_coord);
+  H_loc = @(kx_area_coord, ky_area_coord) Jx_functor(kx_area_coord) * Jy_functor(ky_area_coord) * kx_basis_function(kx_area_coord) * ky_basis_function(ky_area_coord);
   
   ## Generate the integrand which combines both \f$H_{loc}\f$ and
   ## \f$K_{loc}\f$ on the reference cells.

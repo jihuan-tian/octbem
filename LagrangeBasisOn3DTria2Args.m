@@ -8,8 +8,6 @@ function lagrange_basis_functors = LagrangeBasisOn3DTria2Args(order)
   ## @param lagrange_basis_functors The list of generated Lagrange basis functions.
   
   switch(order)
-    case 0
-      lagrange_basis_functors{1} = @(chi) zeros(size(chi(:,1)));
     case 1
       lagrange_basis_functors{1} = @(chi) -chi(:,1)-chi(:,2)+1;
       lagrange_basis_functors{2} = @(chi) chi(:,2);

@@ -16,7 +16,7 @@ function L1_norm = CalcL1Norm(dofs, ansatz_function_space, cell_indices_for_inte
   [qpts_xi1, qpts_xi2, qwts] = triangle_unit_product_set(quad_order);
   qpts = [qpts_xi1', qpts_xi2'];
   qwts = qwts';
-  quad_point_num = length(qwts);
+  quad_point_num = size(qwts, 1);
 
   L1_norm = 0;
 

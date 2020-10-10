@@ -10,7 +10,7 @@ pkg load msh;
 is_integration_on_curved_mesh = true;
 
 ## Read the mesh.
-mesh_filename = argv(){1};
+mesh_filename = "./mesh/sphere-coarse.msh";
 [path_name, file_name, file_ext] = fileparts(mesh_filename);
 problem_domain_mesh = ReadGmshTrias(mesh_filename);
 model_sphere_center = [0, 0, 0];
@@ -20,7 +20,10 @@ model_sphere_radius = 1.0;
 figure;
 triplot3d(problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, "color", "r", "linestyle", "-", "marker", "o");
 hold on;
-Plot3DAffineVectors(problem_domain_mesh.cell_cogs, problem_domain_mesh.cell_normal_vectors / 4);
+
+## N.B. The normal vectors calculated from the mesher point inside
+## \f$\Omega\f$. Here they are negated for visualization.
+Plot3DAffineVectors(problem_domain_mesh.cell_cogs, -problem_domain_mesh.cell_normal_vectors / 4);
 grid off;
 axis equal;
 axis off;
@@ -38,12 +41,12 @@ for m = 1:problem_domain_mesh.number_of_cells
   cogs_to_origin_dists(m) = norm(problem_domain_mesh.cell_cogs(m, :) - model_sphere_center);
 endfor
 
-## Calculate the distance of the end of surface normal vectors to the
-## sphere center, in order to verify that they actuall point outwards,
-## i.e. the calculated distance should be larger than the cell's
-## center of gravity to the sphere center.
+## Calculate the distance of the end of surface normal vectors (for
+## visualization) to the sphere center, in order to verify that they
+## actuall point outwards, i.e. the calculated distance should be
+## larger than the cell's center of gravity to the sphere center.
 fprintf(stdout(), "Distance of cell surface normal vector end points to the sphere center:\n");
-cell_normal_vector_endpoints = (problem_domain_mesh.cell_cogs + problem_domain_mesh.cell_normal_vectors);
+cell_normal_vector_endpoints = (problem_domain_mesh.cell_cogs - problem_domain_mesh.cell_normal_vectors);
 for m = 1:problem_domain_mesh.number_of_cells
   cell_normal_to_origin_dists(m) = norm(cell_normal_vector_endpoints(m, :) - model_sphere_center);
 endfor
@@ -113,6 +116,7 @@ ansatz_function_space = test_function_space;
 ansatz_function_support_nodes = test_function_support_nodes;
 number_of_bases_in_ansatz_function_space = length(ansatz_function_space);
 
+## 2D quadrature rule for normal integration on quadrangles.
 ## Quadrature norder (number of quadrature points) for the integrals in FEM,
 ## which will also be used in BEM. N.B. n-point Gauss quadrature is exact for
 ## polynomials of degree \f$2n - 1\f$.
@@ -157,10 +161,10 @@ progress_counter = 0;
 progress_total_steps = problem_domain_mesh.number_of_cells * problem_domain_mesh.number_of_cells;
 
 ## Calculate the distance between each pair of panels.
-panel_distance_matrix = CalcPanelDistanceMatrix(problem_domain_mesh);
+panel_distance_matrix = CalcTriaPanelDistanceMatrix(problem_domain_mesh);
 
 ## Calculate the neighboring type between each pair of panels.
-neighboring_type_matrix = CalcPanelNeighboringTypes(problem_domain_mesh.mesh_cells);
+neighboring_type_matrix = CalcTriaPanelNeighboringTypes(problem_domain_mesh.mesh_cells);
 
 ## Iterate over each field cell.
 for e = 1:problem_domain_mesh.number_of_cells
@@ -181,13 +185,17 @@ for e = 1:problem_domain_mesh.number_of_cells
       ## the source cell.
       for j = 1:number_of_bases_in_ansatz_function_space
 	if (is_integration_on_curved_mesh)
-	  stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleS2(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, nx, ny, Jx, Jy, model_sphere_center, model_sphere_radius, problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	  stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleS2(@LaplaceDLPKernel3D, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, nx, ny, Jx, Jy, model_sphere_center, model_sphere_radius, problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
 	
 	  rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleS2(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, nx, ny, Jx, Jy, model_sphere_center, model_sphere_radius, problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
 	else
-	  stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	  ## N.B. Because the exterior problem is solved, the original
+	  ## normal vectors from the mesh are pointting outside the
+	  ## sphere, while for the problem being solved, they should
+	  ## point inside the sphere.
+	  stiffness_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceDLPKernel3DFlat, 2, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, problem_domain_mesh.cell_normal_vectors(e, :), problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
 	
-	  rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, -problem_domain_mesh.cell_normal_vectors(e, :), -problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
+	  rhs_matrix(problem_domain_mesh.mesh_cells(e, i), problem_domain_mesh.mesh_cells(f, j)) += ErichsenQuadRuleFlat(@LaplaceSLPKernel3D, 1, test_function_space{i}, ansatz_function_space{j}, shape_function_space, shape_function_space, e, f, panel_distance_matrix, neighboring_type_matrix, problem_domain_mesh.mesh_cells, problem_domain_mesh.mesh_nodes, problem_domain_mesh.cell_normal_vectors(e, :), problem_domain_mesh.cell_normal_vectors(f, :), problem_domain_mesh.cell_surface_metrics(e), problem_domain_mesh.cell_surface_metrics(f), problem_domain_mesh.max_cell_range, sobolev_function_space_order, test_function_space_order, galerkin_estimate_norm_index);
 	endif
       endfor
     endfor

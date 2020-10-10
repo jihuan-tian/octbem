@@ -32,9 +32,9 @@ function surface_metrics = GlobalSurfaceMetricOn3DTria(area_coordinates, node_gl
   surface_metrics = zeros(number_of_points, 1);
 
   for n = 1:number_of_points
-    jacobi_det_yz = GlobalJacobiDetOn3DTria(area_coordinates(n, :), [node_global_coords(:, 2), node_global_coords(:, 3)], shape_function_jacobi_matrix);
-    jacobi_det_zx = GlobalJacobiDetOn3DTria(area_coordinates(n, :), [node_global_coords(:, 3), node_global_coords(:, 1)], shape_function_jacobi_matrix);
-    jacobi_det_xy = GlobalJacobiDetOn3DTria(area_coordinates(n, :), [node_global_coords(:, 1), node_global_coords(:, 2)], shape_function_jacobi_matrix);
+    jacobi_det_yz = GlobalJacobiDet(area_coordinates(n, :), [node_global_coords(:, 2), node_global_coords(:, 3)], shape_function_jacobi_matrix);
+    jacobi_det_zx = GlobalJacobiDet(area_coordinates(n, :), [node_global_coords(:, 3), node_global_coords(:, 1)], shape_function_jacobi_matrix);
+    jacobi_det_xy = GlobalJacobiDet(area_coordinates(n, :), [node_global_coords(:, 1), node_global_coords(:, 2)], shape_function_jacobi_matrix);
 
     ## Calculate the RMS of the componnet Jacobi determinants.
     surface_metrics(n) = sqrt(jacobi_det_yz.^2 + jacobi_det_zx.^2 + jacobi_det_xy.^2);

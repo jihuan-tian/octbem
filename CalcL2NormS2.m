@@ -21,7 +21,7 @@ function L2_norm = CalcL2NormS2(dofs, ansatz_function_space, shape_functions_for
   [qpts_xi1, qpts_xi2, qwts] = triangle_unit_product_set(quad_order);
   qpts = [qpts_xi1', qpts_xi2'];
   qwts = qwts';
-  quad_point_num = length(qwts);
+  quad_point_num = size(qwts, 1);
 
   L2_norm = 0;
 

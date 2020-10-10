@@ -4,7 +4,7 @@ ConfigGraphicsToolkit;
 ## Evaluate each Lagrange basis functions with 3 arguments on its own supporting
 ## node.
 ## ##############################################################################
-max_basis_function_order = 10;
+max_basis_function_order = 3;
 for basis_function_order = 0:max_basis_function_order
   lagrange_basis_functions = LagrangeBasisOn3DTria3Args(basis_function_order);
   tria_area_coords = AreaCoordsOnTriangle(basis_function_order);
@@ -34,8 +34,8 @@ endfor
 ## Evaluate each Lagrange basis functions with 2 arguments on its own supporting
 ## node.
 ## ##############################################################################
-max_basis_function_order = 10;
-for basis_function_order = 0:max_basis_function_order
+max_basis_function_order = 3;
+for basis_function_order = 1:max_basis_function_order
   lagrange_basis_functions = LagrangeBasisOn3DTria2Args(basis_function_order);
   tria_area_coords = AreaCoordsOnTriangle(basis_function_order);
   number_of_lagrange_basis_functions = NumberOfNodesOnTriangle(basis_function_order);
@@ -105,40 +105,40 @@ shape_function_jacobi_matrix_3args = ShapeFunctionJacobiOn3DTria3Args(basis_func
 shape_function_jacobi_matrix_2args = ShapeFunctionJacobiOn3DTria2Args(basis_function_order_for_triangle);
 
 ## Jacobi matrix for the flat triangle
-jacobi_matrix_3args_for_flat_tria_yz = GlobalJacobiOn3DTria(tria_area_coords, [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_3args);
-jacobi_matrix_3args_for_flat_tria_zx = GlobalJacobiOn3DTria(tria_area_coords, [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_3args);
-jacobi_matrix_3args_for_flat_tria_xy = GlobalJacobiOn3DTria(tria_area_coords, [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_3args);
+jacobi_matrix_3args_for_flat_tria_yz = GlobalJacobiMatrix(tria_area_coords, [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_3args);
+jacobi_matrix_3args_for_flat_tria_zx = GlobalJacobiMatrix(tria_area_coords, [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_3args);
+jacobi_matrix_3args_for_flat_tria_xy = GlobalJacobiMatrix(tria_area_coords, [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_3args);
 
-jacobi_matrix_2args_for_flat_tria_yz = GlobalJacobiOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_2args);
-jacobi_matrix_2args_for_flat_tria_zx = GlobalJacobiOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_2args);
-jacobi_matrix_2args_for_flat_tria_xy = GlobalJacobiOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_2args);
+jacobi_matrix_2args_for_flat_tria_yz = GlobalJacobiMatrix(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_2args);
+jacobi_matrix_2args_for_flat_tria_zx = GlobalJacobiMatrix(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_2args);
+jacobi_matrix_2args_for_flat_tria_xy = GlobalJacobiMatrix(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_2args);
 
 ## Jacobi matrix for the curved triangle
-jacobi_matrix_3args_for_curved_tria_yz = GlobalJacobiOn3DTria(tria_area_coords, [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_3args);
-jacobi_matrix_3args_for_curved_tria_zx = GlobalJacobiOn3DTria(tria_area_coords, [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_3args);
-jacobi_matrix_3args_for_curved_tria_xy = GlobalJacobiOn3DTria(tria_area_coords, [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_3args);
+jacobi_matrix_3args_for_curved_tria_yz = GlobalJacobiMatrix(tria_area_coords, [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_3args);
+jacobi_matrix_3args_for_curved_tria_zx = GlobalJacobiMatrix(tria_area_coords, [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_3args);
+jacobi_matrix_3args_for_curved_tria_xy = GlobalJacobiMatrix(tria_area_coords, [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_3args);
 
-jacobi_matrix_2args_for_curved_tria_yz = GlobalJacobiOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_2args);
-jacobi_matrix_2args_for_curved_tria_zx = GlobalJacobiOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_2args);
-jacobi_matrix_2args_for_curved_tria_xy = GlobalJacobiOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_2args);
+jacobi_matrix_2args_for_curved_tria_yz = GlobalJacobiMatrix(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_2args);
+jacobi_matrix_2args_for_curved_tria_zx = GlobalJacobiMatrix(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_2args);
+jacobi_matrix_2args_for_curved_tria_xy = GlobalJacobiMatrix(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_2args);
 
 ## Jacobi det for the flat triangle
-jacobi_det_3args_for_flat_tria_yz = GlobalJacobiDetOn3DTria(tria_area_coords, [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_3args);
-jacobi_det_3args_for_flat_tria_zx = GlobalJacobiDetOn3DTria(tria_area_coords, [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_3args);
-jacobi_det_3args_for_flat_tria_xy = GlobalJacobiDetOn3DTria(tria_area_coords, [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_3args);
+jacobi_det_3args_for_flat_tria_yz = GlobalJacobiDet(tria_area_coords, [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_3args);
+jacobi_det_3args_for_flat_tria_zx = GlobalJacobiDet(tria_area_coords, [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_3args);
+jacobi_det_3args_for_flat_tria_xy = GlobalJacobiDet(tria_area_coords, [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_3args);
 
-jacobi_det_2args_for_flat_tria_yz = GlobalJacobiDetOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_2args);
-jacobi_det_2args_for_flat_tria_zx = GlobalJacobiDetOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_2args);
-jacobi_det_2args_for_flat_tria_xy = GlobalJacobiDetOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_2args);
+jacobi_det_2args_for_flat_tria_yz = GlobalJacobiDet(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,2), tria_node_global_coord_flat(:,3)], shape_function_jacobi_matrix_2args);
+jacobi_det_2args_for_flat_tria_zx = GlobalJacobiDet(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,3), tria_node_global_coord_flat(:,1)], shape_function_jacobi_matrix_2args);
+jacobi_det_2args_for_flat_tria_xy = GlobalJacobiDet(tria_area_coords(:,1:2), [tria_node_global_coord_flat(:,1), tria_node_global_coord_flat(:,2)], shape_function_jacobi_matrix_2args);
 
 ## Jacobi det for the curved triangle
-jacobi_det_3args_for_curved_tria_yz = GlobalJacobiDetOn3DTria(tria_area_coords, [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_3args);
-jacobi_det_3args_for_curved_tria_zx = GlobalJacobiDetOn3DTria(tria_area_coords, [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_3args);
-jacobi_det_3args_for_curved_tria_xy = GlobalJacobiDetOn3DTria(tria_area_coords, [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_3args);
+jacobi_det_3args_for_curved_tria_yz = GlobalJacobiDet(tria_area_coords, [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_3args);
+jacobi_det_3args_for_curved_tria_zx = GlobalJacobiDet(tria_area_coords, [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_3args);
+jacobi_det_3args_for_curved_tria_xy = GlobalJacobiDet(tria_area_coords, [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_3args);
 
-jacobi_det_2args_for_curved_tria_yz = GlobalJacobiDetOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_2args);
-jacobi_det_2args_for_curved_tria_zx = GlobalJacobiDetOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_2args);
-jacobi_det_2args_for_curved_tria_xy = GlobalJacobiDetOn3DTria(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_2args);
+jacobi_det_2args_for_curved_tria_yz = GlobalJacobiDet(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,2), tria_node_global_coord_curved(:,3)], shape_function_jacobi_matrix_2args);
+jacobi_det_2args_for_curved_tria_zx = GlobalJacobiDet(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,3), tria_node_global_coord_curved(:,1)], shape_function_jacobi_matrix_2args);
+jacobi_det_2args_for_curved_tria_xy = GlobalJacobiDet(tria_area_coords(:,1:2), [tria_node_global_coord_curved(:,1), tria_node_global_coord_curved(:,2)], shape_function_jacobi_matrix_2args);
 
 ## Calculate the surface metric for the flat triangle: its value should be 2
 ## times of the triangle area: 34.28272508151879.

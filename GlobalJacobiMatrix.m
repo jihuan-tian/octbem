@@ -1,5 +1,5 @@
-function global_jacobi_matrices = GlobalJacobiOn3DTria(area_coordinates, node_global_coord_components, shape_function_jacobi_matrix)
-  ## GlobalJacobiOn3DTria - Calculate the Jacobi matrix from area coordinate to
+function global_jacobi_matrices = GlobalJacobiMatrix(area_coordinates, node_global_coord_components, shape_function_jacobi_matrix)
+  ## GlobalJacobiMatrix - Calculate the Jacobi matrix from area coordinate to
   ## global coordinate on a triangle in 3D space.
   ## @param  A list of area coordinates on each of which the global Jacobi
   ## matrix is to be evaluated. They are stored as an N*3 or N*2 matrix

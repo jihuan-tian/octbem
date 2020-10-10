@@ -38,7 +38,7 @@ function surface_metrics = GlobalSurfaceMetricOnS2Tria(area_coordinates, node_gl
   surface_metrics = zeros(number_of_points, 1);
 
   for n = 1:number_of_points
-    jacobian_matrix = PlanarToS2TriaJ(area_coordinates(n, :), shape_functions_for_geometry, node_global_coords, sphere_center, sphere_radius){1} * GlobalJacobiOn3DTria(area_coordinates(n, :), node_global_coords, shape_function_jacobian_matrix){1};
+    jacobian_matrix = PlanarToS2TriaJ(area_coordinates(n, :), shape_functions_for_geometry, node_global_coords, sphere_center, sphere_radius){1} * GlobalJacobiMatrix(area_coordinates(n, :), node_global_coords, shape_function_jacobian_matrix){1};
 
     jacobian_det_yz = det(jacobian_matrix([2,3],:));
     jacobian_det_zx = det(jacobian_matrix([3,1],:));

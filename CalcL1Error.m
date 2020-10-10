@@ -24,7 +24,7 @@ function L1_error = CalcL1Error(dofs, functor, ansatz_function_space,
   [qpts_xi1, qpts_xi2, qwts] = triangle_unit_product_set(quad_order);
   qpts = [qpts_xi1', qpts_xi2'];
   qwts = qwts';
-  quad_point_num = length(qwts);
+  quad_point_num = size(qwts, 1);
 
   ## The L1 norm of the difference between the grid function and the
   ## analytical expression.
